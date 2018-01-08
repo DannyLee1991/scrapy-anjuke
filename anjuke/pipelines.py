@@ -22,6 +22,8 @@ class AnjukePipeline(object):
         self.process_locate_info(item)
         self.process_link_info(item)
         self.process_unit_price(item)
+        self.porcess_area_info(item)
+        self.process_buildtime_info(item)
         item['get_time'] = now_timestamp()
         return item
 
@@ -52,6 +54,14 @@ class AnjukePipeline(object):
         # 之前 unit_price 是 这种形式 53571元/m²,
         # 处理后 是 这种形象 53571
         item['unit_price'] = item['unit_price'][:-4]
+
+    def porcess_area_info(self, item):
+        # 25m² -> 25
+        item['area'] = item['area'][:-2]
+
+    def process_buildtime_info(self, item):
+        # 2015年建造  ->  2015
+        item['build_time_info'] = item['build_time_info'][:-3]
 
 
 class Unvalue_remover_Pipeline(object):
@@ -113,7 +123,7 @@ class SQLiteStorePipeline(object):
                      AREA VARCHAR,
                      HOUSE_TYPE VARCHAR,
                      FLOOR_INFO VARCHAR,
-                     BUILD_TIME_INFO VARCHAR,
+                     BUILD_TIME_INFO INTEGER,
                      BROKER_NAME VARCHAR,
                      ADDRESS VARCHAR,
                      LOCATE_A VARCHAR,
