@@ -6,15 +6,15 @@ from anjuke.items import AnjukeItem
 class AnjukeSpider(scrapy.Spider):
     name = "anjuke"
     allowed_domains = ["anjuke.com"]
+    page_index = 1
 
-    def start_requests(self):
-        urls = [
-            'https://shanghai.anjuke.com/sale/p1'
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    start_urls = [
+        'https://shanghai.anjuke.com/sale/pudong',
+    ]
 
     def parse(self, response):
+
+        print("开始解析第%s页 >>> " % self.page_index)
 
         item = AnjukeItem()
         print('------------------------------------------------')
@@ -61,7 +61,12 @@ class AnjukeSpider(scrapy.Spider):
             item['tags'] = tags[0] if tags else []
             item['price'] = price[0] if price else ''
             item['unit_price'] = unit_price[0] if unit_price else ''
-
             yield item
 
+        # 下一页地址
+        next_page_url = response.xpath("//*[@id='content']/div[4]/div[7]/a[@class='aNxt']/@href").extract_first()
+        print(next_page_url)
+        if next_page_url is not None:
+            yield scrapy.Request(response.urljoin(next_page_url))
 
+        self.page_index += 1

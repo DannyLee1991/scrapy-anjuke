@@ -3,6 +3,7 @@ from tools import remove_query_args, now_timestamp
 from scrapy.exceptions import DropItem
 import sqlite3
 from os import path
+from scrapy import log
 
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
@@ -18,7 +19,7 @@ from anjuke.settings import DB_NAME
 class AnjukePipeline(object):
     def process_item(self, item, spider):
         # 数据预处理
-        print("数据预处理")
+        log.msg("数据预处理", log.DEBUG)
         self.process_locate_info(item)
         self.process_link_info(item)
         self.process_unit_price(item)
@@ -89,8 +90,8 @@ class SQLiteStorePipeline(object):
         dispatcher.connect(self.finalize, signals.engine_stopped)
 
     def process_item(self, item, spider):
-        print("插入数据库")
-        sql = self.sql_insert_or_replace(item)
+        log.msg("插入数据库", log.DEBUG)
+        sql = self.sql_insert_or_ignore(item)
         self.conn.execute(sql)
         return item
 
@@ -135,8 +136,8 @@ class SQLiteStorePipeline(object):
                      )""" % (self.table)
         return sql
 
-    def sql_insert_or_replace(self, item):
-        sql = """INSERT OR REPLACE INTO {table_name} 
+    def sql_insert_or_ignore(self, item):
+        sql = """INSERT OR IGNORE INTO {table_name} 
             (TITLE,
             GUARANTEE_INFO,
             LINK,
