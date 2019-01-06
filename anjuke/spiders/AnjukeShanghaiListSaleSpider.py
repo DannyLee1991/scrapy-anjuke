@@ -22,7 +22,7 @@ def gen_start_urls(area_list):
     return start_urls
 
 
-class AnjukeShanghaiSpider(AnjukeBaseSpider):
+class AnjukeShanghaiListSaleSpider(AnjukeBaseSpider):
     name = "anjuke_shanghai"
 
     area_list = ['pudong', 'minhang', 'baoshan', 'xuhui', 'songjiang', 'jiading', 'putuo', 'yangpu', 'hongkou',
