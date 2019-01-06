@@ -3,14 +3,10 @@ import scrapy
 from anjuke.items import AnjukeItem
 
 
-class AnjukeSpider(scrapy.Spider):
+class AnjukeBaseSpider(scrapy.Spider):
     name = "anjuke"
     allowed_domains = ["anjuke.com"]
     page_index = 1
-
-    start_urls = [
-        'https://shanghai.anjuke.com/sale/putuo',
-    ]
 
     def parse(self, response):
 
