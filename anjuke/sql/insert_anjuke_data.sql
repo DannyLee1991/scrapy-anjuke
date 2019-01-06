@@ -1,0 +1,36 @@
+REPLACE INTO {table_name}
+(
+  HOUSE_ID,
+  TITLE,
+  GUARANTEE_INFO,
+  LINK,
+  AREA,
+  HOUSE_TYPE,
+  FLOOR_INFO,
+  BUILD_TIME_INFO,
+  BROKER_NAME,
+  ADDRESS,
+  LOCATE_A,
+  LOCATE_B,
+  TAGS,
+  PRICE,
+  UNIT_PRICE,
+  GET_TIME
+) VALUES (
+  "{house_id}",
+  "{title}",
+  "{guarantee_info}",
+  "{link}",
+  "{area}",
+  "{house_type}",
+  "{floor_info}",
+  "{build_time_info}",
+  "{broker_name}",
+  "{address}",
+  "{locate_a}",
+  "{locate_b}",
+  "{tags}",
+  {price},
+  {unit_price},
+  "{get_time}"
+)

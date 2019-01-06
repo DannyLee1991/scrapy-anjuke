@@ -89,17 +89,13 @@ class SQLiteStorePipeline(object):
         dispatcher.connect(self.initialize, signals.engine_started)
         dispatcher.connect(self.finalize, signals.engine_stopped)
 
-    def process_item(self, item, spider):
-        log.msg("插入数据库", log.DEBUG)
-        sql = self.sql_insert_or_ignore(item)
-        self.conn.execute(sql)
-        return item
-
     def initialize(self):
         if path.exists(self.filename):
             self.conn = sqlite3.connect(self.filename)
         else:
-            self.conn = self.create_table(self.filename)
+            self.conn = sqlite3.connect(self.filename)
+            sql = self.sql_create()
+            self.execute_sql(sql, commit=True)
 
     def finalize(self):
         if self.conn is not None:
@@ -107,70 +103,50 @@ class SQLiteStorePipeline(object):
             self.conn.close()
             self.conn = None
 
-    def create_table(self, filename):
-        conn = sqlite3.connect(filename)
-        sql = self.sql_create()
-        conn.execute(sql)
-        conn.commit()
-        return conn
+    def process_item(self, item, spider):
+        log.msg("插入数据库", log.DEBUG)
+        sql = self.sql_insert_or_ignore(item)
+        self.execute_sql(sql)
+        return item
+
+    def execute_sql(self, sql, commit=True):
+        '''
+        执行sql
+        :param sql:
+        :return:
+        '''
+        log.msg("执行sql > {sql}".format(sql=sql))
+        self.conn.execute(sql)
+        if commit:
+            self.conn.commit()
+
+    def load_sql_file(self, file_name):
+        '''
+        根据文件名加载文件中的sql语句
+        :param file_name:
+        :return:
+        '''
+        with open('./sql/' + file_name, 'r') as f:
+            sql = f.read()
+            return sql
 
     def sql_create(self):
-        sql = """CREATE TABLE %s
-                     (
-                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                     TITLE VARCHAR,
-                     GUARANTEE_INFO VARCHAR,
-                     LINK VARCHAR NOT NULL UNIQUE,
-                     AREA VARCHAR,
-                     HOUSE_TYPE VARCHAR,
-                     FLOOR_INFO VARCHAR,
-                     BUILD_TIME_INFO INTEGER,
-                     BROKER_NAME VARCHAR,
-                     ADDRESS VARCHAR,
-                     LOCATE_A VARCHAR,
-                     LOCATE_B VARCHAR,
-                     TAGS VARCHAR,
-                     PRICE INTEGER,
-                     UNIT_PRICE INTEGER,
-                     GET_TIME VARCHAR
-                     )""" % (self.table)
+        '''
+        建表语句
+        :return:
+        '''
+        sql = self.load_sql_file("create_anjuke_data.sql").format(table_name=self.table)
         return sql
 
     def sql_insert_or_ignore(self, item):
-        sql = """INSERT OR IGNORE INTO {table_name} 
-            (TITLE,
-            GUARANTEE_INFO,
-            LINK,
-            AREA,
-            HOUSE_TYPE,
-            FLOOR_INFO,
-            BUILD_TIME_INFO,
-            BROKER_NAME,
-            ADDRESS,
-            LOCATE_A,
-            LOCATE_B,
-            TAGS,
-            PRICE,
-            UNIT_PRICE,
-            GET_TIME
-            ) VALUES (
-            "{title}",
-            "{guarantee_info}",
-            "{link}",
-            "{area}",
-            "{house_type}",
-            "{floor_info}",
-            "{build_time_info}",
-            "{broker_name}",
-            "{address}",
-            "{locate_a}",
-            "{locate_b}",
-            "{tags}",
-            {price},
-            {unit_price},
-            "{get_time}")
-            """.format(
+        '''
+        插入数据语句
+        :param item:
+        :return:
+        '''
+        sql = self.load_sql_file("insert_anjuke_data.sql").format(
             table_name=self.table,
+            house_id=item['house_id'],
             title=item['title'],
             guarantee_info=item['guarantee_info'],
             link=item['link'],

@@ -1,4 +1,3 @@
-from scrapy import log
 import logging
 
 import random
@@ -15,7 +14,7 @@ class UserAgent(UserAgentMiddleware):
             # 显示当前使用的useragent
             # print "********Current UserAgent:%s************" %ua
             # 记录
-            log.msg('Current UserAgent: ' + ua, level=logging.DEBUG)
+            logging.debug('Current UserAgent: ' + ua)
             request.headers.setdefault('User-Agent', ua)
 
             # the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape

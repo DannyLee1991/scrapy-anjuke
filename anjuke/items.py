@@ -9,6 +9,7 @@ import scrapy
 
 
 class AnjukeItem(scrapy.Item):
+    house_id = scrapy.Field() # 房屋id
     title = scrapy.Field()  # 楼盘名称
     guarantee_info = scrapy.Field()  # 安选验真信息
     link = scrapy.Field()  # 链接

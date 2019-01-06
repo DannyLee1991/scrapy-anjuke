@@ -1,6 +1,20 @@
 import scrapy
 
 from anjuke.items import AnjukeItem
+import logging
+
+
+def extract_house_id(link: str):
+    '''
+    从房屋链接中提取房屋id信息
+    :param link:
+    :return:
+    '''
+    link = link.strip()
+    if link:
+        r = link.split('?')[0].split('/')[-1]
+        return r.strip()
+    return ""
 
 
 class AnjukeBaseSpider(scrapy.Spider):
@@ -22,6 +36,8 @@ class AnjukeBaseSpider(scrapy.Spider):
             guarantee_info = info.xpath("./div[2]/div[1]/em/@title").extract_first()
             # 链接
             link = info.xpath("./div[2]/div[1]/a/@href").extract_first()
+            # 房屋id
+            house_id = extract_house_id(link)
             # 户型
             house_type = info.xpath("./div[2]/div[2]/span[1]/text()").extract_first()
             # 面积
@@ -45,6 +61,7 @@ class AnjukeBaseSpider(scrapy.Spider):
             unit_price = info.xpath("./div[3]/span[2]/text()").extract_first()
 
             # 赋值到item对象上------------
+            item['house_id'] = house_id
             item['title'] = title.strip() if title else ''
             item['guarantee_info'] = guarantee_info if guarantee_info else ''
             item['link'] = link if link else ''
