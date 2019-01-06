@@ -1,7 +1,6 @@
-import scrapy
+import scrapy, json, os
 
 from anjuke.items import AnjukeItem
-import logging
 
 
 def extract_house_id(link: str):
@@ -17,6 +16,40 @@ def extract_house_id(link: str):
     return ""
 
 
+def extract_page_index(url: str):
+    '''
+    从当前url获取当前的页码信息
+    :param url:
+    :return:
+    '''
+    ol = str(url).split('/sale/')
+    pnum = 1
+    if len(ol) >= 2:
+        sl = ol[1].split('/')
+        if type(sl) != str and len(sl) >= 2:
+            pnum = int(sl[1][1:])
+    return pnum
+
+
+cache_file = './tmp/cache_info.json'
+
+
+def cache_crt_page_index(pnum):
+    if not os.path.exists('./tmp'):
+        os.makedirs('./tmp', exist_ok=True)
+    with open(cache_file, 'w') as f:
+        json.dump({"crt_pnum": pnum}, f)
+
+
+def load_crt_page_index_cache():
+    if os.path.exists(cache_file):
+        with open(cache_file, 'r') as f:
+            cache_info = json.load(f)
+            if 'crt_pnum' in cache_info:
+                return cache_info.get("crt_pnum")
+    return 0
+
+
 class AnjukeBaseSpider(scrapy.Spider):
     name = "anjuke"
     allowed_domains = ["anjuke.com"]
@@ -25,6 +58,12 @@ class AnjukeBaseSpider(scrapy.Spider):
     def parse(self, response):
 
         print("开始解析第%s页 >>> " % self.page_index)
+        crt_url = response.url
+        print("当前url: {url}".format(url=crt_url))
+
+        pnum = extract_page_index(crt_url)
+        print(pnum)
+        cache_crt_page_index(pnum)
 
         item = AnjukeItem()
         print('------------------------------------------------')
