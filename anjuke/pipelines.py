@@ -82,7 +82,7 @@ class SQLiteStorePipeline(object):
     将数据存储在sqlite中
     '''
     filename = DB_NAME
-    table = "anjuke_data"
+    table = "anjuke_sale_data"
 
     def __init__(self):
         self.conn = None
@@ -135,7 +135,7 @@ class SQLiteStorePipeline(object):
         建表语句
         :return:
         '''
-        sql = self.load_sql_file("create_anjuke_data.sql").format(table_name=self.table)
+        sql = self.load_sql_file("create_anjuke_sale_data.sql").format(table_name=self.table)
         return sql
 
     def sql_insert_or_ignore(self, item):
@@ -144,7 +144,7 @@ class SQLiteStorePipeline(object):
         :param item:
         :return:
         '''
-        sql = self.load_sql_file("insert_anjuke_data.sql").format(
+        sql = self.load_sql_file("insert_anjuke_sale_data.sql").format(
             table_name=self.table,
             house_id=item['house_id'],
             title=item['title'],
