@@ -25,8 +25,42 @@ def gen_start_urls(area_list):
 class AnjukeShanghaiListSaleSpider(AnjukeBaseSpider):
     name = "anjuke_shanghai"
 
-    area_list = ['pudong', 'minhang', 'baoshan', 'xuhui', 'songjiang', 'jiading', 'putuo', 'yangpu', 'hongkou',
-                 'changning', 'huangpu', 'qingpu', 'fengxian', 'jinshan', 'chongming', 'shanghaizhoubian']
+    # 所有一级行政区
+    # area_list = ['pudong', 'minhang', 'baoshan', 'xuhui', 'songjiang', 'jiading', 'putuo', 'yangpu', 'hongkou',
+    #              'changning', 'huangpu', 'qingpu', 'fengxian', 'jinshan', 'chongming', 'shanghaizhoubian']
+
+    # 所有二级行政区
+    area_list = ['weifang', 'kangqiao', 'yangsi', 'xinchang', 'shibo', 'yuanshen', 'jinyang', 'sanlin',
+                 'lingangxincheng', 'gaoxing', 'yuqiao', 'huamu', 'shuyuan', 'beicai', 'huinan', 'zhoupu', 'datuan',
+                 'waigaoqiao', 'tangqiao', 'jinqiao', 'nicheng', 'lujiazui', 'yangjing', 'tangzhen', 'caolu', 'biyun',
+                 'gaodong', 'sanlinnan', 'chuansha', 'shijigongyuan', 'luchaogang', 'hangtou', 'nanmatou', 'zhangjiang',
+                 'sunqiao', 'yangdong', 'lianyang', 'wanxiang', 'laogang', 'zhangjiang(dong)', 'xuanqiao', 'heqing',
+                 'pudongjichang', 'gumei', 'pujiangzhen', 'xinzhuang', 'zhuanqiao', 'laominxing', 'maqiao',
+                 'longbaijinhui', 'huacao', 'meilong', 'qibao', 'jinhongqiao', 'chunshen', 'gubei(minxing)',
+                 'jinganxincheng', 'hanghua', 'wujing', 'xujing', 'zhaoxiang', 'xianghuaqiao', 'baihe', 'zhujiajiao',
+                 'qingpuxincheng', 'huaxin', 'jinze', 'zhonggu', 'kunshan', 'jiaxing', 'nantong', 'suzhou', 'huzhou',
+                 'cixi', 'xintiandi', 'shibobinjiang', 'dapuqiao', 'fuxinggongyuan', 'wuliqiao', 'yuyuan',
+                 'nanjingdonglu', 'penglaigongyuan', 'laoximen', 'huangpubinjiang', 'dongjiadu', 'renminguangchang',
+                 'jiadinglaocheng', 'jiangqiao', 'anting', 'waigang', 'jiadingbei', 'jiadingxincheng', 'nanxiang',
+                 'fengzhuang', 'huating', 'malu', 'juyuanxinqu', 'nanxiangxincheng', 'fangtai', 'caowang', 'jianbang',
+                 'fengbang', 'daning', 'jiangninglu', 'caojiadu', 'beijiaozhan', 'dayuecheng', 'xizangbeilu', 'yonghe',
+                 'zhabeigongyuan', 'nanjingxilu', 'xinkezhan', 'pengpu', 'jingansi', 'luodian', 'yangxing', 'dahua',
+                 'songbao', 'tonghe', 'gongkang', 'gongfu', 'luojing', 'gucun', 'shangda', 'songnan', 'yuepu',
+                 'gaojing', 'baochengonglu', 'dachang', 'longhua', 'huajing', 'zhangqiao', 'kangjian', 'xujiahui',
+                 'huadongligong', 'hongmeilu', 'wantiguan', 'tianlin', 'xuhuibinjiang', 'xietulu', 'zhiwuyuan',
+                 'shanghainanzhan', 'jianguoxilu', 'hengshanlu', 'caohejing', 'shenminbieshuqu', 'sheshan', 'chedun',
+                 'songjianglaocheng', 'sijing', 'songjiangxincheng', 'jiuting', 'songjiangdaxuecheng',
+                 'songjiangquqita', 'yexie', 'xinqiao', 'maogang', 'dongjing', 'zhangfeng', 'ganquanyichuan',
+                 'changzheng', 'liziyuan', 'wanli', 'taopu', 'guangxin', 'zhenru', 'changshou', 'caoyang', 'zhenguang',
+                 'wuning', 'zhongyuanliangwancheng', 'yangguangweinisi', 'yangpudaqiao', 'dongwaitan',
+                 'huangxinggongyuan', 'wujiaochang', 'kongjianglu', 'anshan', 'zhongyuan', 'wujiaochangbei',
+                 'zhangbaixincun', 'jiangpulu', 'xinjiangwancheng', 'sichuanbeilu', 'linpinglu', 'liangcheng',
+                 'guangzhonglu', 'quyang', 'luxungongyuan', 'dabaishu', 'jiangwanzhen', 'beiwaitan', 'hepinggongyuan',
+                 'zhongshangongyuan', 'beixinjing', 'xinhualu', 'gubei', 'tianshan', 'xijiao', 'xianxia', 'hongqiao',
+                 'hongqiaojichang', 'situan', 'jinhui', 'pingan', 'qingcunbei', 'nanqiao', 'fengcheng', 'haiwan',
+                 'zhelin', 'zhuangxing', 'qingcunnan', 'xidu', 'tinglin', 'shihua', 'shanyang', 'zhujing', 'zhangyan',
+                 'fengjing', 'caojing', 'zhuxing', 'langxia', 'lvxiang', 'changxingdao', 'chongmingzhucheng',
+                 'hengshadao']
 
     print("开始生成起始url")
     start_urls = gen_start_urls(area_list)
